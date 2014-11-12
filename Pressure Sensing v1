@@ -1,0 +1,53 @@
+/*
+  PressureRead
+  Reads an analog input from pressure sensure, which feeds to pin 4, prints the result to the serial monitor.
+  Power is 5V DC.
+  Input is displayed in COM serial port
+ 
+  */
+float P_kpa = 0;
+float P_cmH2O = 0;
+float Vout = 0;
+const int green = 6;//green light for inhalation
+const int red =  7;//red light for exhalation
+
+
+// the setup routine runs once when you press reset:
+void setup() {
+  // initialize serial communication at 9600 bits per second:
+  Serial.begin(9600);
+  pinMode(green, OUTPUT);
+  pinMode(red, OUTPUT);
+}
+
+// the loop routine runs over and over again forever:
+void loop() {
+  // read the input on analog pin 4:
+  int sensorValue = analogRead(A4);
+  // print out the value you read:
+  
+  float Vout = sensorValue * (5.0/1023.0);
+  float P_kpa = Vout - 1.0;
+  //value of pressure in cm H2O, the .18 is to normalize
+  float P_cmH2O = (sensorValue*(5.0/1023.0) - 1.0) / 0.981 - .18;
+
+  
+  if ( P_cmH2O < -.05 )
+  {
+    digitalWrite(green, HIGH);
+    digitalWrite(red, LOW);   
+  }  
+  else if( P_cmH2O > .05)
+  {
+    digitalWrite(green, LOW);
+    digitalWrite(red, HIGH);
+  }
+  else
+  {
+    digitalWrite(green, LOW);
+    digitalWrite(red, LOW);
+  }
+  
+  Serial.println(P_cmH2O);
+  delay(1);        // delay in between reads for stability
+}
