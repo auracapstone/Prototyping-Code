@@ -1,0 +1,71 @@
+#!/usr/bin/python
+# Live Visualization
+
+import serial
+import numpy
+import matplotlib.pyplot as plt
+from drawnow import *
+import csv
+import win32com.client
+
+# *****************************************************************
+# below code is for determining where saving is done
+
+file_name = raw_input('save file name without spaces!! : ')
+developer = raw_input('are you rushi or hannelle? : ')
+
+if (developer=="rushi" or developer=="Rushi"):
+	comPort = '/dev/cu.usbmodem1411'
+	savepath = '/Users/rushipatel/Documents/SeniorDesignApps/PythonScripts/'
+elif (developer=="hannelle" or developer=="Hannelle"):
+	comPort = 3
+	savepath = 'C:/Users/Hannelle/Documents/0_SrDs_Data/'
+else:
+	#finds COM port that the Arduino is on (assumes only one Arduino is connected)
+	wmi = win32com.client.GetObject("winmgmts:")
+	for port in wmi.InstancesOf("Win32_SerialPort"):
+		#print port.Name #port.DeviceID, port.Name
+		if "Arduino" in port.Name:
+			comPort = port.DeviceID
+			print comPort, "is Arduino"
+	savepath = 'C:/'
+
+# end of setup for saving
+# *****************************************************************
+	
+accX = []
+accY = []
+
+arduinoData = serial.Serial(comPort,9600)
+
+plt.ion()
+cnt = 0
+datacnt = 0
+
+def makeFig():
+    plt.plot(accX,'r-')
+
+try:
+    while True:
+        for line in arduinoData:
+            print 'Hi'
+            arduinoString = arduinoData.readline()
+            dataArray = arduinoString.split(',')
+            if(cnt>5):
+                X = float(dataArray[0])
+                Y = float(dataArray[1])
+                accX.append(X)
+                accY.append(Y)
+                drawnow(makeFig)
+                if(cnt>100):
+                    accX.pop(0)
+                    accY.pop(0)
+            cnt = cnt+1
+except KeyboardInterrupt:
+    pass
+
+with open(savepath+file_name+'.csv', 'wb') as csvfile:
+    while(datacnt<len(accX)):
+        dataWriter = csv.writer(csvfile)
+        dataWriter.writerow([accX[datacnt]]+[accY[datacnt]])
+        datacnt = datacnt + 1            
