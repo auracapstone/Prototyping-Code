@@ -56,17 +56,17 @@ try:
             dataArray = arduinoString.split(',')
             if(cnt>5):
 				start_time = time.time()
-                X = float(dataArray[0])
-                Y = float(dataArray[1])
-                accX.append(X)
-                accY.append(Y)
-                drawnow(makeFig)
+				X = float(dataArray[0])
+				Y = float(dataArray[1])
+				accX.append(X)
+				accY.append(Y)
+				drawnow(makeFig)
 				elapsed_time = float(time.time() - start_time)
 				plot_time.append(elapsed_time)
 				
-                if(cnt>100):
-                    accX.pop(0)
-                    accY.pop(0)
+				if(cnt>100):
+					accX.pop(0)
+					accY.pop(0)
 					plot_time.pop(0)
             cnt = cnt+1
 except KeyboardInterrupt:
@@ -75,5 +75,5 @@ except KeyboardInterrupt:
 with open(savepath+file_name+'.csv', 'wb') as csvfile:
     while(datacnt<len(accX)):
         dataWriter = csv.writer(csvfile)
-        dataWriter.writerow([accX[datacnt]]+[accY[datacnt]]+[plot_time[datacnt]]])
+        dataWriter.writerow([accX[datacnt]]+[accY[datacnt]]+[plot_time[datacnt]])
         datacnt = datacnt + 1            
