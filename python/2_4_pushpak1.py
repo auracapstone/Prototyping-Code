@@ -42,11 +42,11 @@ import csv
 file_name = raw_input('save file name without spaces!! : ')
 developer = raw_input('are you rushi or hannelle? : ')
 
-if (developer=="rushi" or developer=="Rushi"):
+if (developer=="rushi" or developer=="Rushi" or developer=="r"):
 	comPort = '/dev/cu.usbmodem1411'
 	savepath = '/Users/rushipatel/Documents/SeniorDesignApps/PythonScripts/'
 	
-elif (developer=="hannelle" or developer=="Hannelle"):
+elif (developer=="hannelle" or developer=="Hannelle" or developer=="h"):
 	comPort = 3
 	savepath = 'C:/Users/Hannelle/Documents/0_SrDs_Data/'
 
