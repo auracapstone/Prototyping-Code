@@ -1,0 +1,73 @@
+import matplotlib.pyplot as plt
+from matplotlib.patches import Ellipse
+plt.ion()
+
+plt.figure(2,figsize = (18,9))
+
+###TABLE LEFT
+plt.subplot2grid((4,4),(3, 0))
+
+data = [['Method 1',1],
+		['Method 2',2],
+		[' ',3],
+		['Coughs detected',4]]
+
+
+the_table = plt.table(cellText=data, cellLoc='center',
+					  loc='center')
+the_table.set_fontsize(20)
+the_table.scale(1.49, 3.9)
+plt.axis('off')
+
+###TABLE middle
+plt.subplot2grid((4,3),(3, 1))
+
+data2 = [['Method 1',1],
+		['Method 2',2],
+		[' ',3],
+		['Coughs detected',4],
+		['5 min shit',5]]
+
+
+the_table2 = plt.table(cellText=data2, cellLoc='center',
+					  loc='center')
+the_table2.set_fontsize(20)
+the_table2.scale(1.15, 3)
+plt.axis('off')
+
+###top left
+plt.subplot2grid((7,7),(1, 0),rowspan=3,colspan=2)
+plt.title('Raw Data - Real Time')
+plt.ylabel('m^2/s')
+plt.plot(0,0)
+# for j in range(len(peakXComp_accZ)):
+	# plt.plot(time2[peakXComp_accZ[j]], XComp_accZ[peakXComp_accZ[j]],'bo')
+
+####top right
+plt.subplot2grid((3,3),(0, 1),colspan=2)
+plt.ylabel('Raw Data - Total')
+plt.title('m^2/s')
+plt.plot(0,0)
+# for j in range(len(peakTemp)):
+	# plt.plot(time2[peakTemp[j]], temp[peakTemp[j]],'bo')
+
+####middle right
+plt.subplot2grid((3,3),(1, 1),colspan=2)
+plt.plot(0,0)
+plt.title('Filtered Data - Total')
+plt.ylabel('Post-FFT (Radians)')
+plt.xlabel('Time(s)')
+# for j in range(len(peakCompX)):
+	# plt.plot(time2[peakCompX[j]], cut_signal[peakCompX[j]],'bo')
+
+plt.subplots_adjust(hspace = 0.5, wspace = 0.4)
+
+####bottom right
+plt.subplot2grid((3,3),(2,2),colspan=1)
+plt.title('Exacerbation Risk Level')
+circle = Ellipse(xy=(.5, .4), width=0.5, height=1, 
+                        edgecolor='k', fc='red', lw=2,clip_on=False)
+fig = plt.gcf()
+fig.gca().add_artist(circle)
+plt.axis('off')
+plt.show()
